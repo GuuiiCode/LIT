@@ -25,14 +25,12 @@ namespace LIT.Domain.Entities
         public string Color { get; private set; }
         public Guid CategoryId { get; private set; }
 
-        public void Change(Guid id,
-                           string name,
+        public void Change(string name,
                            string description,
                            decimal price,
                            string color,
                            Guid categoryId)
         {
-            Id = id;
             Name = name;
             Description = description;
             Price = price;

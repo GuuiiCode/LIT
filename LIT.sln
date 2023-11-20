@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34024.191
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LIT.WebAPI", "LIT\LIT.WebAPI.csproj", "{C8EDE22A-6EF0-4586-9562-2B5708D633D1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LIT.WebAPI", "LIT\LIT.WebAPI.csproj", "{C8EDE22A-6EF0-4586-9562-2B5708D633D1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1 - Services", "1 - Services", "{32798E35-11CD-40FF-B570-D4F95467F654}"
 EndProject
@@ -13,11 +13,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3 - Domain", "3 - Domain", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4 - Infra", "4 - Infra", "{0EBD4950-EC43-4B02-AFBE-2219DEB59E5C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LIT.Application", "LIT.Application\LIT.Application.csproj", "{EFBDE836-2E7D-484E-959E-A87EE70F1642}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LIT.Application", "LIT.Application\LIT.Application.csproj", "{EFBDE836-2E7D-484E-959E-A87EE70F1642}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LIT.Domain", "LIT.Domain\LIT.Domain.csproj", "{9745D103-FF03-4785-84F4-661BE7FEEA9A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LIT.Domain", "LIT.Domain\LIT.Domain.csproj", "{9745D103-FF03-4785-84F4-661BE7FEEA9A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LIT.Infra", "LIT.Infra\LIT.Infra.csproj", "{34A6CE7C-723B-434D-B9A3-9C903BA1CB7B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LIT.Infra", "LIT.Infra\LIT.Infra.csproj", "{34A6CE7C-723B-434D-B9A3-9C903BA1CB7B}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{D7D68AFC-D9B6-4C93-9587-768546B53B01}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +43,10 @@ Global
 		{34A6CE7C-723B-434D-B9A3-9C903BA1CB7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{34A6CE7C-723B-434D-B9A3-9C903BA1CB7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{34A6CE7C-723B-434D-B9A3-9C903BA1CB7B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D7D68AFC-D9B6-4C93-9587-768546B53B01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7D68AFC-D9B6-4C93-9587-768546B53B01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7D68AFC-D9B6-4C93-9587-768546B53B01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D7D68AFC-D9B6-4C93-9587-768546B53B01}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

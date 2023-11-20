@@ -16,11 +16,9 @@ namespace LIT.Domain.Entities
         public string Name { get; private set; }
         public string Description { get; private set; }
 
-        public void Change(Guid id,
-                           string name, 
+        public void Change(string name, 
                            string description)
         {
-            Id = id;
             Name = name;
             Description = description;
         }
