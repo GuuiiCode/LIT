@@ -23,18 +23,5 @@ namespace LIT.Domain.Entities
         public decimal Price { get; private set; }
         public string Color { get; private set; }
         public Guid CategoryId { get; private set; }
-
-        public void Change(string name,
-                           string description,
-                           decimal price,
-                           string color,
-                           Guid categoryId)
-        {
-            Name = name;
-            Description = description;
-            Price = price;
-            Color = color;
-            CategoryId = categoryId;
-        }
     }
 }

@@ -1,3 +1,4 @@
+using LIT.Application.AutoMapper;
 using LIT.WebAPI.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,7 +14,7 @@ builder.Services.AddMongoDB(builder.Configuration)
                 .AddRepositories()
                 .AddServices();
 
-//builder.Services.AddAutoMapper(typeof(AutoMapperSetup));
+builder.Services.AddAutoMapper(typeof(AutoMapperSetup));
 
 var app = builder.Build();
 
