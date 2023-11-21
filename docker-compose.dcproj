@@ -3,7 +3,8 @@
   <PropertyGroup Label="Globals">
     <ProjectVersion>2.1</ProjectVersion>
     <DockerTargetOS>Linux</DockerTargetOS>
-    <ProjectGuid>d7d68afc-d9b6-4c93-9587-768546b53b01</ProjectGuid>
+    <DockerPublishLocally>False</DockerPublishLocally>
+    <ProjectGuid>e57f7ff4-a83d-406c-826d-1493e289334e</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}/swagger</DockerServiceUrl>
     <DockerServiceName>lit.webapi</DockerServiceName>

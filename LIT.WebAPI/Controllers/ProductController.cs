@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LIT.WebAPI.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class ProductController : ControllerBase
     {
         private readonly IProductService _productService;
@@ -16,16 +16,16 @@ namespace LIT.WebAPI.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<ProductViewModel>> Get()
+        public async Task<ActionResult<IEnumerable<ProductViewModel>>> Get()
         {
-            var products = _productService.GetAllAsync();
+            var products = await _productService.GetAllAsync();
             return Ok(products);
         }
 
         [HttpGet("{id}")]
-        public ActionResult<ProductViewModel> Get(Guid id)
+        public async Task<ActionResult<ProductViewModel>> Get(Guid id)
         {
-            var product = _productService.GetAsync(id);
+            var product = await _productService.GetAsync(id);
             if (product == null)
                 return NotFound();
 
@@ -33,32 +33,33 @@ namespace LIT.WebAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post(ProductViewModel product)
+        public async Task<IActionResult> Post(ProductViewModel product)
         {
-            _productService.InsertAsync(product);
+            await _productService.InsertAsync(product);
             return CreatedAtRoute(new { id = product.Id }, product);
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(Guid id, ProductViewModel product)
+        public async Task<IActionResult> Put(Guid id, ProductViewModel product)
         {
-            var existingProduct = _productService.GetAsync(id);
+            var existingProduct = await _productService.GetAsync(id);
             if (existingProduct == null)
                 return NotFound();
 
-            _productService.UpdateAsync(id, product);
+            product.Id = id;
+            await _productService.UpdateAsync(id, product);
 
             return NoContent();
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(Guid id)
+        public async Task<IActionResult> Delete(Guid id)
         {
-            var product = _productService.GetAsync(id);
+            var product = await _productService.GetAsync(id);
             if (product == null)
                 return NotFound();
 
-            _productService.DeleteAsync(id);
+            await _productService.DeleteAsync(id);
 
             return NoContent();
         }

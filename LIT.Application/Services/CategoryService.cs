@@ -41,8 +41,7 @@ namespace LIT.Application.Services
 
         public async Task InsertAsync(CategoryViewModel categoryViewModel, CancellationToken cancellationToken = default)
         {
-            var categories = new Category(categoryViewModel.Id,
-                                          categoryViewModel.Name,
+            var categories = new Category(categoryViewModel.Name,
                                           categoryViewModel.Description);
 
             await _categoryRepository.InsertAsync(categories, cancellationToken);
@@ -58,10 +57,11 @@ namespace LIT.Application.Services
             await _categoryRepository.UpdateAsync(category, cancellationToken);
         }
 
+        //TO DO - Create validation to not let delete if there is register in product
         public async Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            var product = await _categoryRepository.GetAsync(id, cancellationToken);
-            if (product == null)
+            var category = await _categoryRepository.GetAsync(id, cancellationToken);
+            if (category == null)
                 return;
 
             await _categoryRepository.DeleteAsync(id, cancellationToken);

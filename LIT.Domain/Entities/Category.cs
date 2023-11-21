@@ -4,11 +4,10 @@ namespace LIT.Domain.Entities
 {
     public class Category : BaseEntity
     {
-        public Category(Guid id, 
-                        string name, 
+        public Category(string name, 
                         string description)
         {
-            Id = id;
+            Id = Guid.NewGuid();
             Name = name;
             Description = description;
         }

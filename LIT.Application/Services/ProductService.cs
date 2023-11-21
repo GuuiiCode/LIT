@@ -50,12 +50,14 @@ namespace LIT.Application.Services
 
         public async Task InsertAsync(ProductViewModel productViewModel, CancellationToken cancellationToken = default)
         {
-            var product = new Product(productViewModel.Id,
-                                      productViewModel.Name,
+            var category = await _categoryRepository.GetAsync(productViewModel.CategoryId, cancellationToken)
+                ?? throw new Exception($"Category '{productViewModel.CategoryId}' not found");
+
+            var product = new Product(productViewModel.Name,
                                       productViewModel.Description,
                                       productViewModel.Price,
                                       productViewModel.Color,
-                                      productViewModel.CategoryId);
+                                      category.Id);
 
             await _producRepository.InsertAsync(product, cancellationToken);
         }

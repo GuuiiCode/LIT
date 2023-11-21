@@ -1,4 +1,4 @@
-using LIT.Configuration;
+using LIT.WebAPI.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -4,14 +4,13 @@ namespace LIT.Domain.Entities
 {
     public class Product : BaseEntity
     {
-        public Product(Guid id,
-                       string name, 
+        public Product(string name, 
                        string description, 
                        decimal price, 
                        string color,
                        Guid categoryId)
         {
-            Id = id;
+            Id = Guid.NewGuid();
             Name = name;
             Description = description;
             Price = price;

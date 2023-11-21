@@ -5,7 +5,7 @@ using LIT.Infra.Context;
 using LIT.Infra.Repositories;
 using MongoDB.Driver;
 
-namespace LIT.Configuration
+namespace LIT.WebAPI.Configuration
 {
     public static class ServiceCollectionExtensions
     {

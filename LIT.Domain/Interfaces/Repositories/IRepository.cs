@@ -1,6 +1,8 @@
-﻿namespace LIT.Domain.Interfaces.Repositories
+﻿using ControlExpenses.Domain.Entities;
+
+namespace LIT.Domain.Interfaces.Repositories
 {
-    public interface IRepository<TEntity> where TEntity : class
+    public interface IRepository<TEntity> where TEntity : BaseEntity
     {
         Task<TEntity?> GetAsync(Guid id, CancellationToken cancellationToken = default);
         Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken cancellationToken = default);

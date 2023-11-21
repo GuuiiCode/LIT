@@ -1,11 +1,11 @@
-version: '3.8'
+version: '3.4'
 
 services:
   lit.webapi:
     image: ${DOCKER_REGISTRY-}litwebapi
     build:
       context: .
-      dockerfile: LIT/Dockerfile
+      dockerfile: LIT.WebAPI/Dockerfile
     depends_on: 
       - mongodb
     environment:
