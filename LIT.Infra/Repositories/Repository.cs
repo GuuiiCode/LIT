@@ -5,7 +5,7 @@ using MongoDB.Driver;
 
 namespace LIT.Infra.Repositories
 {
-    public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEntity
+    public class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity
     {
         private readonly IMongoCollection<TEntity> _collection;
 

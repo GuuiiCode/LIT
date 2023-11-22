@@ -2,7 +2,7 @@
 
 namespace LIT.Domain.Entities
 {
-    public class Category : BaseEntity
+    public class Category : Entity
     {
         public Category(string name, 
                         string description)

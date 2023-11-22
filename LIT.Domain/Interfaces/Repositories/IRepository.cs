@@ -2,7 +2,7 @@
 
 namespace LIT.Domain.Interfaces.Repositories
 {
-    public interface IRepository<TEntity> where TEntity : BaseEntity
+    public interface IRepository<TEntity> where TEntity : Entity
     {
         Task<TEntity?> GetAsync(Guid id, CancellationToken cancellationToken = default);
         Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken cancellationToken = default);

@@ -1,6 +1,6 @@
 ﻿namespace ControlExpenses.Domain.Entities
 {
-    public abstract class BaseEntity
+    public abstract class Entity
     {
         public Guid Id { get; set; }
     }

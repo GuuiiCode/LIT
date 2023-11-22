@@ -29,7 +29,7 @@ namespace LIT.Application.Services
 
         public async Task<ProductViewModel?> GetAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            //TO DO - Create an method for the repository to validate if category exists
+            //TO DO - Create an method for the repository to validate if product exists
             var product = await _producRepository.GetAsync(id, cancellationToken);
             if (product == null)
                 return null;
@@ -39,7 +39,7 @@ namespace LIT.Application.Services
 
         public async Task InsertAsync(ProductViewModel productViewModel, CancellationToken cancellationToken = default)
         {
-            //TO DO - Create an method for the repository to validate if category exists
+            //TO DO - Create an method for the repository to validate if product exists
             var category = await _categoryRepository.GetAsync(productViewModel.CategoryId, cancellationToken)
                 ?? throw new Exception($"Category '{productViewModel.CategoryId}' not found");
 
@@ -50,7 +50,7 @@ namespace LIT.Application.Services
 
         public async Task UpdateAsync(Guid id, ProductViewModel productViewModel, CancellationToken cancellationToken = default)
         {
-            //TO DO - Create an method for the repository to validate if category exists
+            //TO DO - Create an method for the repository to validate if product exists
             var product = await _producRepository.GetAsync(productViewModel.Id, cancellationToken)
                 ?? throw new Exception($"Product '{productViewModel.Id}' not found");
 
