@@ -1,5 +1,5 @@
 ﻿using ControlExpenses.Domain.Entities;
-using System.Net;
+using System.ComponentModel.DataAnnotations;
 
 namespace LIT.Domain.Entities
 {
@@ -19,10 +19,20 @@ namespace LIT.Domain.Entities
             CategoryId = categoryId;
         }
 
+        [Required(ErrorMessage = "Fill in the Name field")]
+        [StringLength(100, ErrorMessage = "Maximum 100 characters")]
         public string Name { get; private set; }
+
+        [Required(ErrorMessage = "Fill in the Description field")]
+        [StringLength(150, ErrorMessage = "Maximum 150 characters")]
         public string Description { get; private set; }
+
+        [Required(ErrorMessage = "Fill in the Price field")]
         public decimal Price { get; private set; }
-        public string? Color { get; private set; }
+
+        [Required(ErrorMessage = "Fill in the Category field")]
         public Guid CategoryId { get; private set; }
+
+        public string? Color { get; private set; }
     }
 }

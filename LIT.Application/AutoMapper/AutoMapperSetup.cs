@@ -8,8 +8,11 @@ namespace LIT.Application.AutoMapper
     {
         public AutoMapperSetup()
         {
+            CreateMap<BaseProductViewModel, Product>().ReverseMap();
             CreateMap<ProductViewModel, Product>().ReverseMap();
-            CreateMap<Category, CategoryViewModel>().ReverseMap();
+
+            CreateMap<BaseCategoryViewModel, Category>().ReverseMap();
+            CreateMap<CategoryViewModel, Category>().ReverseMap();
         }
     }
 }

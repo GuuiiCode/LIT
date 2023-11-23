@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Amazon.Auth.AccessControlPolicy;
+using AutoMapper;
 using LIT.Application.Services.Interfaces;
 using LIT.Application.ViewModels;
 using LIT.Domain.Entities;
@@ -17,46 +18,42 @@ namespace LIT.Application.Services
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<CategoryViewModel>> GetAllAsync(CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<CategoryViewModel>> GetAllCategories(CancellationToken cancellationToken = default)
         {
             var categories = await _categoryRepository.GetAllAsync(cancellationToken);
             return _mapper.Map<IEnumerable<CategoryViewModel>>(categories);
         }
 
-        public async Task<CategoryViewModel?> GetAsync(Guid id, CancellationToken cancellationToken = default)
+        public async Task<CategoryViewModel?> GetCategory(Guid id, CancellationToken cancellationToken = default)
         {
-            //TO DO - Create an method for the repository to validate if category exists
-            var category = await _categoryRepository.GetAsync(id, cancellationToken);
-            if (category == null) 
-                return null;
+            var category = await GetCategoryIfNotExistThrowException(id, cancellationToken);
             return _mapper.Map<CategoryViewModel>(category);
         }
 
-        public async Task InsertAsync(CategoryViewModel categoryViewModel, CancellationToken cancellationToken = default)
+        public async Task<CategoryViewModel> InsertCategory(BaseCategoryViewModel categoryViewModel, CancellationToken cancellationToken = default)
         {
             var category = _mapper.Map<Category>(categoryViewModel);
             await _categoryRepository.InsertAsync(category, cancellationToken);
+            return _mapper.Map<CategoryViewModel>(category);
         }
 
-        public async Task UpdateAsync(Guid id, CategoryViewModel categoryViewModel, CancellationToken cancellationToken = default)
+        public async Task UpdateCategory(Guid id, CategoryViewModel categoryViewModel, CancellationToken cancellationToken = default)
         {
-            //TO DO - Create an method for the repository to validate if category exists
-            var category = await _categoryRepository.GetAsync(id, cancellationToken)
-                ?? throw new Exception($"Category '{id}' not found");
-
+            var category = await GetCategoryIfNotExistThrowException(id, cancellationToken);
             category = _mapper.Map<Category>(categoryViewModel);
-
             await _categoryRepository.UpdateAsync(category, cancellationToken);
         }
 
         //TO DO - Create validation to not let delete if there is register in product
-        public async Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)
+        public async Task DeleteCategory(Guid id, CancellationToken cancellationToken = default)
         {
-            //TO DO - Create an method for the repository to validate if category exists
-            var category = await _categoryRepository.GetAsync(id, cancellationToken);
-            if (category == null)
-                return;
+            await GetCategoryIfNotExistThrowException(id, cancellationToken);
             await _categoryRepository.DeleteAsync(id, cancellationToken);
+        }
+
+        private async Task<Category> GetCategoryIfNotExistThrowException(Guid id, CancellationToken cancellationToken)
+        {
+            return await _categoryRepository.GetAsync(id, cancellationToken) ?? throw new Exception($"Category '{id}' not found");
         }
     }
 }

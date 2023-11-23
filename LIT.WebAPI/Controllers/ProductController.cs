@@ -18,49 +18,36 @@ namespace LIT.WebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProductViewModel>>> Get()
         {
-            var products = await _productService.GetAllAsync();
+            var products = await _productService.GetAllProducts();
             return Ok(products);
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductViewModel>> Get(Guid id)
         {
-            var product = await _productService.GetAsync(id);
-            if (product == null)
-                return NotFound();
-
+            var product = await _productService.GetProduct(id);
             return Ok(product);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(ProductViewModel product)
+        public async Task<IActionResult> Post(BaseProductViewModel productViewModel)
         {
-            await _productService.InsertAsync(product);
-            return CreatedAtRoute(new { id = product.Id }, product);
+            var product = await _productService.InsertProduct(productViewModel);
+            return CreatedAtRoute(new { product.Id }, product);
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(Guid id, ProductViewModel product)
         {
-            var existingProduct = await _productService.GetAsync(id);
-            if (existingProduct == null)
-                return NotFound();
-
             product.Id = id;
-            await _productService.UpdateAsync(id, product);
-
+            await _productService.UpdateProduct(id, product);
             return NoContent();
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var product = await _productService.GetAsync(id);
-            if (product == null)
-                return NotFound();
-
-            await _productService.DeleteAsync(id);
-
+            await _productService.DeleteProduct(id);
             return NoContent();
         }
     }

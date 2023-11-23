@@ -18,49 +18,36 @@ namespace LIT.WebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CategoryViewModel>>> Get()
         {
-            var categories = await _categoryService.GetAllAsync();
+            var categories = await _categoryService.GetAllCategories();
             return Ok(categories);
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<CategoryViewModel>> Get(Guid id)
         {
-            var category = await _categoryService.GetAsync(id);
-            if (category == null)
-                return NotFound();
-
+            var category = await _categoryService.GetCategory(id);
             return Ok(category);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(CategoryViewModel category)
+        public async Task<IActionResult> Post(BaseCategoryViewModel categoryViewModel)
         {
-            await _categoryService.InsertAsync(category);
-            return CreatedAtRoute(new { id = category.Id }, category);
+            var category = await _categoryService.InsertCategory(categoryViewModel);
+            return CreatedAtRoute(new { category.Id }, category);
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(Guid id, CategoryViewModel category)
         {
-            var existingCategory = await _categoryService.GetAsync(id);
-            if (existingCategory == null)
-                return NotFound();
-
             category.Id = id;
-            await _categoryService.UpdateAsync(id, category);
-
+            await _categoryService.UpdateCategory(id, category);
             return NoContent();
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var Category = await _categoryService.GetAsync(id);
-            if (Category == null)
-                return NotFound();
-
-            await _categoryService.DeleteAsync(id);
-
+            await _categoryService.DeleteCategory(id);
             return NoContent();
         }
     }

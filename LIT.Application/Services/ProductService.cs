@@ -21,55 +21,49 @@ namespace LIT.Application.Services
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<ProductViewModel>> GetAllAsync(CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<ProductViewModel>> GetAllProducts(CancellationToken cancellationToken = default)
         {
             var products = await _producRepository.GetAllAsync(cancellationToken);
             return _mapper.Map<IEnumerable<ProductViewModel>>(products);
         }
 
-        public async Task<ProductViewModel?> GetAsync(Guid id, CancellationToken cancellationToken = default)
+        public async Task<ProductViewModel?> GetProduct(Guid id, CancellationToken cancellationToken = default)
         {
-            //TO DO - Create an method for the repository to validate if product exists
-            var product = await _producRepository.GetAsync(id, cancellationToken);
-            if (product == null)
-                return null;
-
+            var product = await GetProductIfNotExistThrowException(id, cancellationToken);
             return _mapper.Map<ProductViewModel>(product);
         }
 
-        public async Task InsertAsync(ProductViewModel productViewModel, CancellationToken cancellationToken = default)
+        public async Task<ProductViewModel> InsertProduct(BaseProductViewModel productViewModel, CancellationToken cancellationToken = default)
         {
-            //TO DO - Create an method for the repository to validate if product exists
-            var category = await _categoryRepository.GetAsync(productViewModel.CategoryId, cancellationToken)
-                ?? throw new Exception($"Category '{productViewModel.CategoryId}' not found");
-
+            await ExistsCategory(productViewModel.CategoryId, cancellationToken);
             var product = _mapper.Map<Product>(productViewModel);
-
             await _producRepository.InsertAsync(product, cancellationToken);
+            return _mapper.Map<ProductViewModel>(product);
         }
 
-        public async Task UpdateAsync(Guid id, ProductViewModel productViewModel, CancellationToken cancellationToken = default)
+        public async Task UpdateProduct(Guid id, ProductViewModel productViewModel, CancellationToken cancellationToken = default)
         {
-            //TO DO - Create an method for the repository to validate if product exists
-            var product = await _producRepository.GetAsync(productViewModel.Id, cancellationToken)
-                ?? throw new Exception($"Product '{productViewModel.Id}' not found");
-
-            var category = await _categoryRepository.GetAsync(productViewModel.CategoryId, cancellationToken)
-                ?? throw new Exception($"Category '{productViewModel.CategoryId}' not found");
-
+            var product = await GetProductIfNotExistThrowException(id, cancellationToken);
+            await ExistsCategory(productViewModel.CategoryId, cancellationToken);
             product = _mapper.Map<Product>(productViewModel);
-
             await _producRepository.UpdateAsync(product, cancellationToken);
         }
 
-        public async Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)
+        public async Task DeleteProduct(Guid id, CancellationToken cancellationToken = default)
         {
-            //TO DO - Create an method for the repository to validate if category exists
-            var product = await _producRepository.GetAsync(id, cancellationToken);
-            if (product == null)
-                return;
-
+            await GetProductIfNotExistThrowException(id, cancellationToken);
             await _producRepository.DeleteAsync(id, cancellationToken);
+        }
+
+        private async Task ExistsCategory(Guid? id, CancellationToken cancellationToken)
+        {
+            if (id.HasValue && !await _categoryRepository.Exists(id.Value, cancellationToken))
+                throw new Exception($"Category '{id}' not found");
+        }
+
+        private async Task<Product> GetProductIfNotExistThrowException(Guid id, CancellationToken cancellationToken)
+        {
+            return await _producRepository.GetAsync(id, cancellationToken) ?? throw new Exception($"Product '{id}' not found");
         }
     }
 }

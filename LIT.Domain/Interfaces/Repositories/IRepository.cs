@@ -9,5 +9,6 @@ namespace LIT.Domain.Interfaces.Repositories
         Task InsertAsync(TEntity entity, CancellationToken cancellationToken = default);
         Task UpdateAsync(TEntity entity, CancellationToken cancellationToken = default);
         Task DeleteAsync(Guid id, CancellationToken cancellationToken = default);
+        Task<bool> Exists(Guid id, CancellationToken cancellationToken = default);
     }
 }

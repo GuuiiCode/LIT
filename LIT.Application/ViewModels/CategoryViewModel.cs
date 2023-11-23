@@ -2,16 +2,20 @@
 
 namespace LIT.Application.ViewModels
 {
-    public class CategoryViewModel
+    public class CategoryViewModel : BaseCategoryViewModel
     {
         public Guid Id { get; set; }
+    }
 
+    public class BaseCategoryViewModel
+    {
         [Required(ErrorMessage = "Fill in the Name field")]
         [StringLength(100, ErrorMessage = "Maximum 100 characters")]
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         [Required(ErrorMessage = "Fill in the Description field")]
         [StringLength(150, ErrorMessage = "Maximum 150 characters")]
-        public string Description { get; set; }
+        public string? Description { get; set; }
     }
+
 }
