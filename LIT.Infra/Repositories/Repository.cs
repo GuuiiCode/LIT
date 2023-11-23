@@ -2,6 +2,7 @@
 using LIT.Domain.Interfaces.Repositories;
 using LIT.Infra.Context;
 using MongoDB.Driver;
+using System.Linq.Expressions;
 
 namespace LIT.Infra.Repositories
 {
@@ -42,6 +43,11 @@ namespace LIT.Infra.Repositories
         public async Task<bool> Exists(Guid id, CancellationToken cancellationToken = default)
         {
             return await _collection.Find(x => x.Id == id).AnyAsync(cancellationToken);
+        }
+
+        public async Task<bool> Find(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default)
+        {
+            return await _collection.Find(predicate).AnyAsync(cancellationToken);
         }
     }
 }

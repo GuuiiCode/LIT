@@ -1,5 +1,4 @@
-﻿using Amazon.Auth.AccessControlPolicy;
-using AutoMapper;
+﻿using AutoMapper;
 using LIT.Application.Services.Interfaces;
 using LIT.Application.ViewModels;
 using LIT.Domain.Entities;
@@ -10,11 +9,15 @@ namespace LIT.Application.Services
     public class CategoryService : ICategoryService
     {
         private readonly ICategoryRepository _categoryRepository;
+        private readonly IProductRepository _productRepository;
         private readonly IMapper _mapper;
 
-        public CategoryService(ICategoryRepository categoryRepository, IMapper mapper)
+        public CategoryService(ICategoryRepository categoryRepository,
+                               IProductRepository productRepository,
+                               IMapper mapper)
         {
             _categoryRepository = categoryRepository;
+            _productRepository = productRepository;
             _mapper = mapper;
         }
 
@@ -44,11 +47,18 @@ namespace LIT.Application.Services
             await _categoryRepository.UpdateAsync(category, cancellationToken);
         }
 
-        //TO DO - Create validation to not let delete if there is register in product
         public async Task DeleteCategory(Guid id, CancellationToken cancellationToken = default)
         {
             await GetCategoryIfNotExistThrowException(id, cancellationToken);
+            await CheckIfExistCategoryInAnyProduct(id, cancellationToken);
             await _categoryRepository.DeleteAsync(id, cancellationToken);
+        }
+
+        private async Task CheckIfExistCategoryInAnyProduct(Guid id, CancellationToken cancellationToken)
+        {
+            var hasProduct = await _productRepository.Find(x => x.CategoryId == id, cancellationToken);
+            if (hasProduct)
+                throw new Exception($"You can't delete this Category beacuse it being used in one or more Products");
         }
 
         private async Task<Category> GetCategoryIfNotExistThrowException(Guid id, CancellationToken cancellationToken)
