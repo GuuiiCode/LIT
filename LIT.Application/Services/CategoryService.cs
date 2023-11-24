@@ -21,33 +21,33 @@ namespace LIT.Application.Services
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<CategoryViewModel>> GetAllCategories(CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<CategoryViewModel>> GetAllAsync(CancellationToken cancellationToken = default)
         {
             var categories = await _categoryRepository.GetAllAsync(cancellationToken);
             return _mapper.Map<IEnumerable<CategoryViewModel>>(categories);
         }
 
-        public async Task<CategoryViewModel?> GetCategory(Guid id, CancellationToken cancellationToken = default)
+        public async Task<CategoryViewModel?> GetAsync(Guid id, CancellationToken cancellationToken = default)
         {
             var category = await GetCategoryIfNotExistThrowException(id, cancellationToken);
             return _mapper.Map<CategoryViewModel>(category);
         }
 
-        public async Task<CategoryViewModel> InsertCategory(BaseCategoryViewModel categoryViewModel, CancellationToken cancellationToken = default)
+        public async Task<CategoryViewModel> InsertAsync(BaseCategoryViewModel categoryViewModel, CancellationToken cancellationToken = default)
         {
             var category = _mapper.Map<Category>(categoryViewModel);
             await _categoryRepository.InsertAsync(category, cancellationToken);
             return _mapper.Map<CategoryViewModel>(category);
         }
 
-        public async Task UpdateCategory(Guid id, CategoryViewModel categoryViewModel, CancellationToken cancellationToken = default)
+        public async Task UpdateAsync(Guid id, CategoryViewModel categoryViewModel, CancellationToken cancellationToken = default)
         {
             var category = await GetCategoryIfNotExistThrowException(id, cancellationToken);
             category = _mapper.Map<Category>(categoryViewModel);
             await _categoryRepository.UpdateAsync(category, cancellationToken);
         }
 
-        public async Task DeleteCategory(Guid id, CancellationToken cancellationToken = default)
+        public async Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)
         {
             await GetCategoryIfNotExistThrowException(id, cancellationToken);
             await CheckIfExistCategoryInAnyProduct(id, cancellationToken);

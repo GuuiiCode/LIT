@@ -18,21 +18,21 @@ namespace LIT.WebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CategoryViewModel>>> Get()
         {
-            var categories = await _categoryService.GetAllCategories();
+            var categories = await _categoryService.GetAllAsync();
             return Ok(categories);
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<CategoryViewModel>> Get(Guid id)
         {
-            var category = await _categoryService.GetCategory(id);
+            var category = await _categoryService.GetAsync(id);
             return Ok(category);
         }
 
         [HttpPost]
         public async Task<IActionResult> Post(BaseCategoryViewModel categoryViewModel)
         {
-            var category = await _categoryService.InsertCategory(categoryViewModel);
+            var category = await _categoryService.InsertAsync(categoryViewModel);
             return CreatedAtRoute(new { category.Id }, category);
         }
 
@@ -40,14 +40,14 @@ namespace LIT.WebAPI.Controllers
         public async Task<IActionResult> Put(Guid id, CategoryViewModel category)
         {
             category.Id = id;
-            await _categoryService.UpdateCategory(id, category);
+            await _categoryService.UpdateAsync(id, category);
             return NoContent();
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            await _categoryService.DeleteCategory(id);
+            await _categoryService.DeleteAsync(id);
             return NoContent();
         }
     }

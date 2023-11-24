@@ -1,4 +1,4 @@
-using LIT.Application.AutoMapper;
+using LIT.Application.Configuration;
 using LIT.WebAPI.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,10 +9,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddMongoDB(builder.Configuration)
-                .AddRepositories()
-                .AddServices();
+                .AddRepositories();
 
-builder.Services.AddAutoMapper(typeof(AutoMapperSetup));
+builder.Services.AddAutoMapper()
+                .AddServices();
 
 var app = builder.Build();
 
