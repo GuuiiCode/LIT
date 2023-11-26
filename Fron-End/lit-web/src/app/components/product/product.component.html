@@ -1,1 +1,100 @@
-<p>product works!</p>
+<button class="btn btn-primary mb-3" (click)="clearFields()">
+  {{showList ? 'Register Category' : 'List Category'}}
+</button>
+
+<div *ngIf="showList">
+  <app-list-product [products]="products"
+    (update)="getById($event)"
+    (delete)="remove($event)">
+  </app-list-product>
+</div>
+
+<div *ngIf="!showList">
+  <form [formGroup]="form" >
+    <div class="row justify-content-center"> <!-- Product Fields -->
+      <div class="col-6">
+        <div class="form-group "> <!-- Name -->
+          <label for="name">Name:</label>
+          <input class="form-control"
+            type="text"
+            id="name"
+            placeholder="Name"
+            formControlName="name"
+            [(ngModel)]="product.name"
+            autocomplete="off"
+            required>
+          <div *ngIf="name?.invalid && (name?.dirty || name?.touched)">
+            <div *ngIf="name!.errors?.['required']">Name is required</div>
+            <div *ngIf="name!.errors?.['maxlength']">Maximum 100 characters</div>
+          </div>
+        </div>
+
+        <div class="form-group "> <!-- Price -->
+          <label for="price">Price:</label>
+          <input class="form-control"
+            type="string"
+            id="price"
+            placeholder="Price"
+            formControlName="price"
+            [(ngModel)]="product.price"
+            autocomplete="off"
+            required>
+          <div *ngIf="price?.invalid && (price?.dirty || price?.touched)">
+            <div *ngIf="price!.errors?.['required']">Price is required</div>
+          </div>
+        </div>
+
+        <div class="form-group color" > <!-- Color -->
+          <label for="color">Color:</label>
+          <input class="form-control"
+            type="string"
+            id="color"
+            placeholder="Color"
+            formControlName="color"
+            [(ngModel)]="product.color"
+            autocomplete="off">
+        </div>
+
+        <div class="form-group" > <!-- CategoryId -->
+          <label for="categoryId">Category</label>
+          <select class="form-select"
+            aria-label="Select category"
+            id="categoryId"
+            formControlName="categoryId"
+            [(ngModel)]="product.categoryId">
+            <option [value]="" selected></option>
+            <option [value]="category.id" *ngFor="let category of categories">
+              {{category.name}}
+            </option>
+          </select>
+          <div *ngIf="categoryId?.invalid && (categoryId?.dirty || categoryId?.touched)">
+            <div *ngIf="categoryId!.errors?.['required']">Category is required</div>
+          </div>
+        </div>
+
+        <div class="form-group mt-3"> <!-- Description -->
+          <label for="description">Description:</label>
+          <textarea class="form-control"
+            id="description"
+            placeholder="Description"
+            formControlName="description"
+            [(ngModel)]="product.description"
+            required>
+          </textarea>
+          <div *ngIf="description?.invalid && (description?.dirty || description?.touched)">
+            <div *ngIf="description!.errors?.['required']">Description is required</div>
+            <div *ngIf="description!.errors?.['maxlength']">Maximum 150 characters</div>
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-end"> <!-- Button Create Or Update -->
+          <button type="submit"
+            class="btn btn-success"
+            (click)="commandSaveOrChange()"
+            [disabled]="!form.valid">{{!product.id ? 'Register' : 'Update'}}
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,25 @@
+<table class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">Price</th>
+      <th scope="col">Color</th>
+      <th scope="col">CategoryId</th>
+      <th scope="col">Description</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let product of products">
+      <td>{{product.name}}</td>
+      <td>{{product.price}}</td>
+      <td>{{product.color}}</td>
+      <td>{{product.categoryId}}</td>
+      <td>{{product.description}}</td>
+      <td>
+        <button class="btn btn-warning mr-3" (click)="put(product)">Update</button>
+        <button class="btn btn-danger" (click)="remove(product.id)">Delete</button>
+      </td>
+    </tr>
+  </tbody>
+</table>

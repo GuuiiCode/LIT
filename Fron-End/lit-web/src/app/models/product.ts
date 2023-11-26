@@ -1,6 +1,9 @@
-export interface Product {
+export interface Product extends BaseProduct {
   id: string;
-  categoryId: string;
+}
+
+export interface BaseProduct {
+  categoryId: string; //or Category
   name: string;
   description: string;
   price: number;

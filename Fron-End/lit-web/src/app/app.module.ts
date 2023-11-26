@@ -9,6 +9,7 @@ import { CategoryService } from './services/category.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { ListCategoryComponent } from './components/category/list-category/list-category.component';
+import { ListProductComponent } from './components/product/list-product/list-product.component';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { ListCategoryComponent } from './components/category/list-category/list-
     ProductComponent,
     CategoryComponent,
     ListCategoryComponent,
+    ListProductComponent,
   ],
   imports: [
     BrowserModule,
