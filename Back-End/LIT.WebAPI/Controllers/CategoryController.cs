@@ -30,7 +30,7 @@ namespace LIT.WebAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(BaseCategoryViewModel categoryViewModel)
+        public async Task<IActionResult> Post([FromBody] BaseCategoryViewModel categoryViewModel)
         {
             var category = await _categoryService.InsertAsync(categoryViewModel);
             return CreatedAtRoute(new { category.Id }, category);
@@ -41,14 +41,14 @@ namespace LIT.WebAPI.Controllers
         {
             category.Id = id;
             await _categoryService.UpdateAsync(id, category);
-            return NoContent();
+            return Ok();
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
             await _categoryService.DeleteAsync(id);
-            return NoContent();
+            return Ok();
         }
     }
 }

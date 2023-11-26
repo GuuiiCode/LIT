@@ -1,0 +1,57 @@
+<button class="btn btn-primary mb-3" (click)="clearFields()">
+  {{showList ? 'Register Category' : 'List Category'}}
+</button>
+
+<div *ngIf="showList">
+  <app-list-category [categories]="categories"
+    (update)="getById($event)"
+    (delete)="remove($event)">
+  </app-list-category>
+</div>
+
+<div *ngIf="!showList">
+  <form [formGroup]="form" >
+    <div class="row justify-content-center">
+      <div class="col-6">
+        <div class="form-group" >
+          <label for="name">Name:</label>
+          <input class="form-control"
+            type="text"
+            id="name"
+            placeholder="Name"
+            formControlName="name"
+            [(ngModel)]="category.name"
+            autocomplete="off"
+            required>
+          <div *ngIf="name?.invalid && (name?.dirty || name?.touched)">
+            <div *ngIf="name!.errors?.['required']">Name is required</div>
+            <div *ngIf="name!.errors?.['maxlength']">Maximum 100 characters</div>
+          </div>
+        </div>
+
+        <div class="form-group mt-3">
+          <label for="description">Description:</label>
+          <textarea class="form-control"
+            id="description"
+            placeholder="Description"
+            formControlName="description"
+            [(ngModel)]="category.description"
+            required>
+          </textarea>
+          <div *ngIf="description?.invalid && (description?.dirty || description?.touched)">
+            <div *ngIf="description!.errors?.['required']">Description is required</div>
+            <div *ngIf="description!.errors?.['maxlength']">Maximum 150 characters</div>
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-end">
+          <button type="submit"
+            class="btn btn-success"
+            (click)="commandSaveOrChange()"
+            [disabled]="!form.valid">Register
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
