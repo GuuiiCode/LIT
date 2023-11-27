@@ -10,9 +10,9 @@ import { CategoryService } from 'src/app/services/category.service';
 })
 export class CategoryComponent implements OnInit {
   form!: FormGroup;
-  category: Category = {id: '', name: '', description: ''};
+  category: Category = this.createObjectCategory();
   categories: Category[] = [];
-  showList: boolean = true;
+  show: boolean = false;
 
   constructor(private formBuilder: FormBuilder,
               private categoryService: CategoryService) { }
@@ -44,62 +44,75 @@ export class CategoryComponent implements OnInit {
       this.put();
   }
 
-  getAll() {
-    this.categoryService.getAll().subscribe((data:Category[]) => {
-      this.categories = data;
-      this.showList = true;
-    }, (error: any) => {
-        console.log(error);
-        alert('erro interno do sistema');
-    })
-  }
-
-  getById(category: Category) {
-    this.category = category;
-    this.showList = false;
-  }
-
-  post(): void {
-    let baseCategory: BaseCategory = {
-      name: this.category.name,
-      description: this.category.description
-    };
-
-    this.categoryService.create(baseCategory).subscribe(data => {
-      if (data) {
-        alert('Category register with success');
-      this.showList = true;
-      } else {
-        alert('Error registering category');
-      }
-    }, (error) => {
-      console.log(error);
-      alert('Internal system error');
-    })
-  }
-
-  put(): void {
-    this.categoryService.update(this.category).subscribe(() => {
-      alert('Category update with success');
-      this.showList = true;
-    }, (error) => {
-      console.log(error);
-      alert('Internal system error');
+  getAll(): void {
+    this.categoryService.getAll().subscribe({
+      next: value => this.categories = value,
+      error: err => this.notificationError('fetch all data', err)
     });
   }
 
-  remove(id: string){
-    this.categoryService.delete(id).subscribe(data => {
-      alert('Category delete with success');
-      this.getAll();
-    }, error => {
-      alert('Internal system error');
-    })
+  post(): void {
+    this.categoryService.create(this.createObjectBaseCategory()).subscribe({
+      next: () =>  this.notificationSuccess('register'),
+      error: err => this.notificationError('registering ', err)
+    });
+  }
+
+  put(): void {
+    this.categoryService.update(this.category).subscribe({
+      next: () => this.notificationSuccess('updated'),
+      error: err => this.notificationError('updating', err)
+    });
+  }
+
+  remove(id: string): void {
+    this.categoryService.delete(id).subscribe({
+      next: () => this.notificationSuccess('delete'),
+      error: err => this.notificationError('deleting', err)
+    });
+  }
+
+  getById(category: Category): void {
+    this.category = category;
+    this.showList();
+  }
+
+  notificationSuccess(value: string): void {
+    alert('Category ' + value + ' with success');
+    if(value !== 'delete')
+      this.showList();
+
+    this.getAll();
+  }
+
+  notificationError(value: string, err: any): void {
+    alert('Error '+ value + ' category');
+    console.log('Internal system error ' + err)
   }
 
   clearFields(): void {
-    this.showList = !this.showList;
-    this.category = {id: '', name: '', description: ''};
+    this.category = this.createObjectCategory();
     this.formValidation();
+    this.showList();
+  }
+
+  showList(): boolean {
+    this.show = !this.show;
+    return this.show;
+  }
+
+  createObjectCategory(): Category {
+    return {
+      id: '',
+      name: '',
+      description: '',
+    };
+  }
+
+  createObjectBaseCategory(): BaseCategory {
+    return {
+      name: this.category.name,
+      description: this.category.description,
+    };
   }
 }

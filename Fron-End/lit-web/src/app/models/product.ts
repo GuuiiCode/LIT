@@ -1,5 +1,7 @@
 export interface Product extends BaseProduct {
   id: string;
+  categoryName: string;
+  categoryDescription: string;
 }
 
 export interface BaseProduct {

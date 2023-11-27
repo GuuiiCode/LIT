@@ -15,9 +15,7 @@ export class ListCategoryComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit(): void {
-    console.log(this.categories);
-  }
+  ngOnInit(): void {}
 
   put(category: Category): void {
     this.update.emit(category);

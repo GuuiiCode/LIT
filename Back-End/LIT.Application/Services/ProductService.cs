@@ -24,13 +24,40 @@ namespace LIT.Application.Services
         public async Task<IEnumerable<ProductViewModel>> GetAllAsync(CancellationToken cancellationToken = default)
         {
             var products = await _producRepository.GetAllAsync(cancellationToken);
-            return _mapper.Map<IEnumerable<ProductViewModel>>(products);
+            var categories = await _categoryRepository.GetAllAsync(cancellationToken);
+
+            return from product in products
+                   join category in categories
+                   on product.CategoryId equals category.Id
+                   select new ProductViewModel
+                   {
+                       Id = product.Id,
+                       Name = product.Name,
+                       Price = product.Price,
+                       Color = product.Color,
+                       Description = product.Description,
+                       CategoryId = product?.Id,
+                       CategoryName = category?.Name,
+                       CategoryDescription = category?.Description,
+                   };
         }
 
         public async Task<ProductViewModel?> GetAsync(Guid id, CancellationToken cancellationToken = default)
         {
             var product = await GetProductIfNotExistsThrowException(id, cancellationToken);
-            return _mapper.Map<ProductViewModel>(product);
+            var category = await _categoryRepository.GetAsync(product.CategoryId, cancellationToken);
+
+            return new ProductViewModel
+            {
+                Id = product.Id,
+                Name = product.Name,
+                Price = product.Price,
+                Color = product.Color,
+                Description = product.Description,
+                CategoryId = product.Id,
+                CategoryName = category?.Name,
+                CategoryDescription = category?.Description,
+            };
         }
 
         public async Task<ProductViewModel> InsertAsync(BaseProductViewModel productViewModel, CancellationToken cancellationToken = default)

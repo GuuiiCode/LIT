@@ -5,6 +5,8 @@ namespace LIT.Application.ViewModels
     public class ProductViewModel : BaseProductViewModel
     {
         public Guid Id { get; set; }
+        public string? CategoryName { get; set; }
+        public string? CategoryDescription { get; set; }
     }
 
     public class BaseProductViewModel

@@ -16,8 +16,6 @@ export class ProductComponent implements OnInit {
   products: Product[] = [];
   categories: Category[] = [];
   showList: boolean = true;
-  isUpdate: boolean = false;
-  isSave: boolean = true;
 
   constructor(private formBuilder: FormBuilder,
               private productService: ProductService,
@@ -108,8 +106,6 @@ export class ProductComponent implements OnInit {
     this.productService.update(this.product).subscribe(() => {
       alert('Product update with success');
       this.showList = true;
-      this.isUpdate = true;
-      this.isSave = false;
     }, (error) => {
       console.log(error);
       alert('Internal system error');
@@ -133,7 +129,15 @@ export class ProductComponent implements OnInit {
   }
 
   createObjectProduct(): Product {
-    return {id: '', categoryId: '', name: '', description: '', price: 0, color: ''};
+    return {
+      id: '',
+      name: '',
+      description: '',
+      price: 0,
+      color: '',
+      categoryId: '',
+      categoryName: '',
+      categoryDescription: ''};
   }
 
   createObjectBaseProduct(): BaseProduct {

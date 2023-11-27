@@ -1,15 +1,15 @@
 <button class="btn btn-primary mb-3" (click)="clearFields()">
-  {{showList ? 'Register Category' : 'List Category'}}
+  {{ !this.show ? 'Register Category' : 'List Category'}}
 </button>
 
-<div *ngIf="showList">
+<div *ngIf="!this.show">
   <app-list-category [categories]="categories"
     (update)="getById($event)"
     (delete)="remove($event)">
   </app-list-category>
 </div>
 
-<div *ngIf="!showList">
+<div *ngIf="this.show">
   <form [formGroup]="form" >
     <div class="row justify-content-center"> <!-- Category Fields -->
       <div class="col-6">
