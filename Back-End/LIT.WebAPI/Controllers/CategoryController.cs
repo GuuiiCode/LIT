@@ -26,6 +26,9 @@ namespace LIT.WebAPI.Controllers
         public async Task<ActionResult<CategoryViewModel>> Get(Guid id)
         {
             var category = await _categoryService.GetAsync(id);
+            if(category == null) 
+                return NotFound();
+
             return Ok(category);
         }
 
@@ -33,6 +36,9 @@ namespace LIT.WebAPI.Controllers
         public async Task<IActionResult> Post([FromBody] BaseCategoryViewModel categoryViewModel)
         {
             var category = await _categoryService.InsertAsync(categoryViewModel);
+            if(category == null)
+                return BadRequest();
+
             return CreatedAtRoute(new { category.Id }, category);
         }
 
@@ -40,14 +46,21 @@ namespace LIT.WebAPI.Controllers
         public async Task<IActionResult> Put(Guid id, CategoryViewModel category)
         {
             category.Id = id;
-            await _categoryService.UpdateAsync(id, category);
+            var result = await _categoryService.UpdateAsync(id, category);
+
+            if(!result.Success)
+                return BadRequest(result.Error);
+
             return Ok();
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            await _categoryService.DeleteAsync(id);
+            var result = await _categoryService.DeleteAsync(id);
+            if(!result.Success)
+                return BadRequest(result.Error);
+
             return Ok();
         }
     }

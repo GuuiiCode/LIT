@@ -15,7 +15,11 @@ export class ProductComponent implements OnInit {
   product: Product = this.createObjectProduct();
   products: Product[] = [];
   categories: Category[] = [];
-  showList: boolean = true;
+  show: boolean = true;
+  hasError: boolean = false;
+  hasSuccess: boolean = false;
+  msgError?: string;
+  msgSuccess?: string;
 
   constructor(private formBuilder: FormBuilder,
               private productService: ProductService,
@@ -64,68 +68,82 @@ export class ProductComponent implements OnInit {
       this.put();
   }
 
+  getById(product: Product): void {
+    this.product = product;
+    this.showList();
+  }
+
   getAllCategories(): void {
-    this.categoryService.getAll().subscribe((data:Category[]) => {
-      this.categories = data;
-    }, (error) => {
-        console.log(error);
-        alert('Internal system error');
+    this.categoryService.getAll().subscribe({
+      next: value => this.categories = value,
+      error: (err) => this.notificationError(err.error)
     });
   }
 
   getAll(): void {
-    this.productService.getAll().subscribe((data:Product[]) => {
-      this.products = data;
-    }, (error) => {
-        console.log(error);
-        alert('Internal system error');
-    })
-  }
-
-  getById(product: Product): void {
-    this.product = product;
-    this.showList = false;
+    this.productService.getAll().subscribe({
+      next: value => this.products = value,
+      error: (err) => this.notificationError(err.error)
+    });
   }
 
   post(): void {
-    this.productService.create(this.createObjectBaseProduct()).subscribe(data => {
-      if (data) {
-        alert('Product register with success');
-        this.getAll();
-        this.showList = true;
-      } else {
-        alert('Error registering product');
-      }
-    }, (error) => {
-      console.log(error);
-      alert('Internal system error');
-    })
+    this.productService.create(this.createObjectBaseProduct()).subscribe({
+      next: () =>  this.notificationSuccess('registered'),
+      error: (err) => this.notificationError(err.error)
+    });
   }
 
   put(): void {
-    this.productService.update(this.product).subscribe(() => {
-      alert('Product update with success');
-      this.showList = true;
-    }, (error) => {
-      console.log(error);
-      alert('Internal system error');
+    this.productService.update(this.product).subscribe({
+      next: () => this.notificationSuccess('updated'),
+      error: (err) => this.notificationError(err.error)
     });
   }
 
   remove(id: string): void {
-    this.productService.delete(id).subscribe(() => {
-      alert('Product delete with success');
-      this.getAll();
-    }, (error) => {
-      console.log(error);
-      alert('Internal system error');
-    })
+    this.productService.delete(id).subscribe({
+      next: () => this.notificationSuccess('delete'),
+      error: (err) => this.notificationError(err.error)
+    });
   }
 
   clearFields(): void {
-    this.showList = !this.showList;
     this.product = this.createObjectProduct();
     this.formValidation();
+    this.showList();
+  }
+
+  notificationSuccess(value: string): void {
+    if(value !== 'delete')
+      this.showList();
+
+    this.getAll();
+
+    this.msgSuccess = 'Product ' + value + ' with success';
+    this.hasSuccess = true
+    setTimeout(() => {
+      this.msgSuccess = '';
+      this.hasSuccess = false;
+    }, 2000);
+    this.hasError = false;
+  }
+
+  notificationError(err?: string): void {
+    if(err) {
+      this.msgError = err;
+      this.hasError = true;
+      setTimeout(() => {
+        this.msgError = '';
+        this.hasError = false;
+      }, 2000);
+    }
+    this.hasSuccess = false
+  }
+
+  showList(): boolean {
+    this.show = !this.show;
+    return this.show;
   }
 
   createObjectProduct(): Product {

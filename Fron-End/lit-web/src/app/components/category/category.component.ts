@@ -12,7 +12,11 @@ export class CategoryComponent implements OnInit {
   form!: FormGroup;
   category: Category = this.createObjectCategory();
   categories: Category[] = [];
-  show: boolean = false;
+  show: boolean = true;
+  hasError: boolean = false;
+  hasSuccess: boolean = false;
+  msgError?: string;
+  msgSuccess?: string;
 
   constructor(private formBuilder: FormBuilder,
               private categoryService: CategoryService) { }
@@ -47,28 +51,28 @@ export class CategoryComponent implements OnInit {
   getAll(): void {
     this.categoryService.getAll().subscribe({
       next: value => this.categories = value,
-      error: err => this.notificationError('fetch all data', err)
+      error: (err) => this.notificationError(err.error)
     });
   }
 
   post(): void {
     this.categoryService.create(this.createObjectBaseCategory()).subscribe({
-      next: () =>  this.notificationSuccess('register'),
-      error: err => this.notificationError('registering ', err)
+      next: () =>  this.notificationSuccess('registered'),
+      error: (err) => this.notificationError(err.error)
     });
   }
 
   put(): void {
     this.categoryService.update(this.category).subscribe({
       next: () => this.notificationSuccess('updated'),
-      error: err => this.notificationError('updating', err)
+      error: (err) => this.notificationError(err.error)
     });
   }
 
   remove(id: string): void {
     this.categoryService.delete(id).subscribe({
       next: () => this.notificationSuccess('delete'),
-      error: err => this.notificationError('deleting', err)
+      error: (err) => this.notificationError(err.error)
     });
   }
 
@@ -78,16 +82,30 @@ export class CategoryComponent implements OnInit {
   }
 
   notificationSuccess(value: string): void {
-    alert('Category ' + value + ' with success');
     if(value !== 'delete')
       this.showList();
 
     this.getAll();
+
+    this.msgSuccess = 'Category ' + value + ' with success';
+    this.hasSuccess = true
+    setTimeout(() => {
+      this.msgSuccess = '';
+      this.hasSuccess = false;
+    }, 2000);
+    this.hasError = false;
   }
 
-  notificationError(value: string, err: any): void {
-    alert('Error '+ value + ' category');
-    console.log('Internal system error ' + err)
+  notificationError(err?: string): void {
+    if(err) {
+      this.msgError = err;
+      this.hasError = true;
+      setTimeout(() => {
+        this.msgError = '';
+        this.hasError = false;
+      }, 2000);
+    }
+    this.hasSuccess = false
   }
 
   clearFields(): void {

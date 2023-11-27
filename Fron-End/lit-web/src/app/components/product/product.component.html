@@ -1,15 +1,23 @@
+<div *ngIf="hasError" class="alert alert-danger row justify-content-center" role="alert">
+  {{ msgError }}
+</div>
+
+<div *ngIf="hasSuccess" class="alert alert-info row justify-content-center" role="alert">
+  {{ msgSuccess }}
+</div>
+
 <button class="btn btn-primary mb-3" (click)="clearFields()">
-  {{showList ? 'Register Product' : 'List Product'}}
+  {{this.show ? 'Register Product' : 'List Product'}}
 </button>
 
-<div *ngIf="showList">
+<div *ngIf="this.show">
   <app-list-product [products]="products"
     (update)="getById($event)"
     (delete)="remove($event)">
   </app-list-product>
 </div>
 
-<div *ngIf="!showList">
+<div *ngIf="!this.show">
   <form [formGroup]="form" >
     <div class="row justify-content-center"> <!-- Product Fields -->
       <div class="col-6">

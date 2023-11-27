@@ -1,12 +1,12 @@
 import { Category } from './../../../models/category';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-list-category',
   templateUrl: './list-category.component.html',
   styleUrls: ['./list-category.component.css']
 })
-export class ListCategoryComponent implements OnInit {
+export class ListCategoryComponent {
   @Input() categories: Category[] = [];
 
   @Output() update = new EventEmitter<Category>();
@@ -14,8 +14,6 @@ export class ListCategoryComponent implements OnInit {
   @Output() delete = new EventEmitter<string>();
 
   constructor() { }
-
-  ngOnInit(): void {}
 
   put(category: Category): void {
     this.update.emit(category);

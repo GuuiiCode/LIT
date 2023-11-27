@@ -10,6 +10,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { ListCategoryComponent } from './components/category/list-category/list-category.component';
 import { ListProductComponent } from './components/product/list-product/list-product.component';
+import { NavMenuComponent } from './shared/nav-menu/nav-menu.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { ListProductComponent } from './components/product/list-product/list-pro
     CategoryComponent,
     ListCategoryComponent,
     ListProductComponent,
+    NavMenuComponent,
   ],
   imports: [
     BrowserModule,

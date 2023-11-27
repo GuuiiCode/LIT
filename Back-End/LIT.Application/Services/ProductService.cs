@@ -36,7 +36,7 @@ namespace LIT.Application.Services
                        Price = product.Price,
                        Color = product.Color,
                        Description = product.Description,
-                       CategoryId = product?.Id,
+                       CategoryId = product?.CategoryId,
                        CategoryName = category?.Name,
                        CategoryDescription = category?.Description,
                    };
@@ -54,7 +54,7 @@ namespace LIT.Application.Services
                 Price = product.Price,
                 Color = product.Color,
                 Description = product.Description,
-                CategoryId = product.Id,
+                CategoryId = product.CategoryId,
                 CategoryName = category?.Name,
                 CategoryDescription = category?.Description,
             };

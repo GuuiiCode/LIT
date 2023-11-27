@@ -29,7 +29,10 @@ namespace LIT.Application.Services
 
         public async Task<CategoryViewModel?> GetAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            var category = await GetCategoryIfNotExistThrowException(id, cancellationToken);
+            var category = await GetCategoryIfNotExistReturnNull(id, cancellationToken);
+            if (category == null)
+                return null;
+
             return _mapper.Map<CategoryViewModel>(category);
         }
 
@@ -40,30 +43,48 @@ namespace LIT.Application.Services
             return _mapper.Map<CategoryViewModel>(category);
         }
 
-        public async Task UpdateAsync(Guid id, CategoryViewModel categoryViewModel, CancellationToken cancellationToken = default)
+        public async Task<ResultViewModel> UpdateAsync(Guid id, CategoryViewModel categoryViewModel, CancellationToken cancellationToken = default)
         {
-            var category = await GetCategoryIfNotExistThrowException(id, cancellationToken);
+            var category = await GetCategoryIfNotExistReturnNull(id, cancellationToken);
+            if (category == null)
+                return new ResultViewModel { Success = false, Error = $"Category '{id}' not found" };
+
             category = _mapper.Map<Category>(categoryViewModel);
             await _categoryRepository.UpdateAsync(category, cancellationToken);
+
+            return new ResultViewModel { Success = true };
         }
 
-        public async Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)
+        public async Task<ResultViewModel> DeleteAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            await GetCategoryIfNotExistThrowException(id, cancellationToken);
-            await CheckIfExistCategoryInAnyProduct(id, cancellationToken);
+            var category = await GetCategoryIfNotExistReturnNull(id, cancellationToken);
+            if (category == null)
+                return new ResultViewModel { Success = false, Error = $"Category '{id}' not found" };
+
+            var result = await CheckIfExistCategoryInAnyProduct(id, cancellationToken);
+            if (!result.Success)
+                return result;
+
             await _categoryRepository.DeleteAsync(id, cancellationToken);
+            return result;
         }
 
-        private async Task CheckIfExistCategoryInAnyProduct(Guid id, CancellationToken cancellationToken)
+        private async Task<ResultViewModel> CheckIfExistCategoryInAnyProduct(Guid id, CancellationToken cancellationToken)
         {
             var hasProduct = await _productRepository.Find(x => x.CategoryId == id, cancellationToken);
             if (hasProduct)
-                throw new Exception($"You can't delete this Category beacuse it being used in one or more Products");
+                return new ResultViewModel { Success = false, Error = $"You can't delete this Category beacuse it being used in one or more Products" };
+            
+            return new ResultViewModel { Success = true };
         }
 
-        private async Task<Category> GetCategoryIfNotExistThrowException(Guid id, CancellationToken cancellationToken)
+        private async Task<Category?> GetCategoryIfNotExistReturnNull(Guid id, CancellationToken cancellationToken)
         {
-            return await _categoryRepository.GetAsync(id, cancellationToken) ?? throw new Exception($"Category '{id}' not found");
+            var category = await _categoryRepository.GetAsync(id, cancellationToken);
+            if (category == null)
+                return null;
+
+            return await _categoryRepository.GetAsync(id, cancellationToken);
         }
     }
 }
