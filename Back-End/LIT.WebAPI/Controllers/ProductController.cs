@@ -26,28 +26,42 @@ namespace LIT.WebAPI.Controllers
         public async Task<ActionResult<ProductViewModel>> Get(Guid id)
         {
             var product = await _productService.GetAsync(id);
+            if (product == null)
+                return NotFound();
+
             return Ok(product);
         }
 
         [HttpPost]
         public async Task<IActionResult> Post(BaseProductViewModel productViewModel)
         {
-            var product = await _productService.InsertAsync(productViewModel);
-            return CreatedAtRoute(new { product.Id }, product);
+            var result = await _productService.InsertAsync(productViewModel);
+
+            if (!result.ResultViewModel.Success)
+                return NotFound(result.ResultViewModel.Error);
+
+            return CreatedAtRoute(new { result.ProductViewModel.Id }, result.ProductViewModel);
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(Guid id, ProductViewModel product)
         {
             product.Id = id;
-            await _productService.UpdateAsync(id, product);
+            var result = await _productService.UpdateAsync(id, product);
+
+            if (!result.Success)
+                return BadRequest(result.Error);
+
             return NoContent();
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            await _productService.DeleteAsync(id);
+            var result = await _productService.DeleteAsync(id);
+            if (!result.Success)
+                return NotFound(result.Error);
+
             return NoContent();
         }
     }

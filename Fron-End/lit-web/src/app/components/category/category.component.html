@@ -6,9 +6,13 @@
   {{ msgSuccess }}
 </div>
 
-<button class="btn btn-primary mb-3" (click)="clearFields()">
-  {{ this.show ? 'Register Category' : 'List Category'}}
-</button>
+<div class="row justify-content-center">
+  <div class="col-12 col-sm-12 col-md-8 col-lg-8 col-xl-6">
+    <button class="btn btn-primary mb-3" (click)="clearFields()">
+      {{ this.show ? 'Register Category' : 'List Category'}}
+    </button>
+  </div>
+</div>
 
 <div *ngIf="this.show">
   <app-list-category [categories]="categories"
@@ -20,7 +24,7 @@
 <div *ngIf="!this.show">
   <form [formGroup]="form" >
     <div class="row justify-content-center"> <!-- Category Fields -->
-      <div class="col-6">
+      <div class="col-12 col-sm-12 col-md-8 col-lg-8 col-xl-6">
         <div class="form-group" > <!-- Name -->
           <label for="name">Name:</label>
           <input class="form-control"
@@ -32,8 +36,8 @@
             autocomplete="off"
             required>
           <div *ngIf="name?.invalid && (name?.dirty || name?.touched)">
-            <div *ngIf="name!.errors?.['required']">Name is required</div>
-            <div *ngIf="name!.errors?.['maxlength']">Maximum 100 characters</div>
+            <div class="text-red" *ngIf="name!.errors?.['required']">Name is required</div>
+            <div class="text-red" *ngIf="name!.errors?.['maxlength']">Maximum 100 characters</div>
           </div>
         </div>
 
@@ -47,16 +51,16 @@
             required>
           </textarea>
           <div *ngIf="description?.invalid && (description?.dirty || description?.touched)">
-            <div *ngIf="description!.errors?.['required']">Description is required</div>
-            <div *ngIf="description!.errors?.['maxlength']">Maximum 150 characters</div>
+            <div class="text-red" *ngIf="description!.errors?.['required']">Description is required</div>
+            <div class="text-red" *ngIf="description!.errors?.['maxlength']">Maximum 150 characters</div>
           </div>
         </div>
 
-        <div class="d-flex justify-content-end"> <!-- Button Create Or Update -->
+        <div class="d-flex justify-content-end mt-3"> <!-- Button Create Or Update -->
           <button type="submit"
             class="btn btn-success"
             (click)="commandSaveOrChange()"
-            [disabled]="!form.valid">Register
+            [disabled]="!form.valid">{{!category.id ? 'Register' : 'Update'}}
           </button>
         </div>
       </div>

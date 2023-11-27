@@ -29,7 +29,7 @@ namespace LIT.Application.Services
 
         public async Task<CategoryViewModel?> GetAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            var category = await GetCategoryIfNotExistReturnNull(id, cancellationToken);
+            var category = await _categoryRepository.GetAsync(id, cancellationToken);
             if (category == null)
                 return null;
 
@@ -45,27 +45,33 @@ namespace LIT.Application.Services
 
         public async Task<ResultViewModel> UpdateAsync(Guid id, CategoryViewModel categoryViewModel, CancellationToken cancellationToken = default)
         {
-            var category = await GetCategoryIfNotExistReturnNull(id, cancellationToken);
-            if (category == null)
-                return new ResultViewModel { Success = false, Error = $"Category '{id}' not found" };
+            var category = await _categoryRepository.GetAsync(id, cancellationToken);
+
+            var result = GetCategoryIfNotExistReturnError(id, category);
+            if(!result.Success)
+                return result;
 
             category = _mapper.Map<Category>(categoryViewModel);
+
             await _categoryRepository.UpdateAsync(category, cancellationToken);
 
-            return new ResultViewModel { Success = true };
+            return result;
         }
 
         public async Task<ResultViewModel> DeleteAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            var category = await GetCategoryIfNotExistReturnNull(id, cancellationToken);
-            if (category == null)
-                return new ResultViewModel { Success = false, Error = $"Category '{id}' not found" };
+            var category = await _categoryRepository.GetAsync(id, cancellationToken);
+
+            var categoryExists = GetCategoryIfNotExistReturnError(id, category);
+            if (!categoryExists.Success)
+                return categoryExists;
 
             var result = await CheckIfExistCategoryInAnyProduct(id, cancellationToken);
             if (!result.Success)
                 return result;
 
             await _categoryRepository.DeleteAsync(id, cancellationToken);
+
             return result;
         }
 
@@ -78,13 +84,12 @@ namespace LIT.Application.Services
             return new ResultViewModel { Success = true };
         }
 
-        private async Task<Category?> GetCategoryIfNotExistReturnNull(Guid id, CancellationToken cancellationToken)
+        private ResultViewModel GetCategoryIfNotExistReturnError(Guid id, Category? category)
         {
-            var category = await _categoryRepository.GetAsync(id, cancellationToken);
             if (category == null)
-                return null;
+                return new ResultViewModel { Success = false, Error = $"Category '{id}' not found" };
 
-            return await _categoryRepository.GetAsync(id, cancellationToken);
+            return new ResultViewModel { Success = true };
         }
     }
 }

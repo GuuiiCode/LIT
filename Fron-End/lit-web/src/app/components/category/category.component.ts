@@ -86,14 +86,14 @@ export class CategoryComponent implements OnInit {
       this.showList();
 
     this.getAll();
-
     this.msgSuccess = 'Category ' + value + ' with success';
     this.hasSuccess = true
+    this.hasError = false;
+
     setTimeout(() => {
       this.msgSuccess = '';
       this.hasSuccess = false;
     }, 2000);
-    this.hasError = false;
   }
 
   notificationError(err?: string): void {

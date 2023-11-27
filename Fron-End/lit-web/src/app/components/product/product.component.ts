@@ -108,25 +108,19 @@ export class ProductComponent implements OnInit {
     });
   }
 
-  clearFields(): void {
-    this.product = this.createObjectProduct();
-    this.formValidation();
-    this.showList();
-  }
-
   notificationSuccess(value: string): void {
     if(value !== 'delete')
       this.showList();
 
     this.getAll();
-
     this.msgSuccess = 'Product ' + value + ' with success';
     this.hasSuccess = true
+    this.hasError = false;
+
     setTimeout(() => {
       this.msgSuccess = '';
       this.hasSuccess = false;
     }, 2000);
-    this.hasError = false;
   }
 
   notificationError(err?: string): void {
@@ -139,6 +133,12 @@ export class ProductComponent implements OnInit {
       }, 2000);
     }
     this.hasSuccess = false
+  }
+
+  clearFields(): void {
+    this.product = this.createObjectProduct();
+    this.formValidation();
+    this.showList();
   }
 
   showList(): boolean {

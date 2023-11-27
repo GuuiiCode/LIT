@@ -44,7 +44,10 @@ namespace LIT.Application.Services
 
         public async Task<ProductViewModel?> GetAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            var product = await GetProductIfNotExistsThrowException(id, cancellationToken);
+            var product = await _producRepository.GetAsync(id, cancellationToken);
+            if (product == null)
+                return null;
+
             var category = await _categoryRepository.GetAsync(product.CategoryId, cancellationToken);
 
             return new ProductViewModel
@@ -60,37 +63,63 @@ namespace LIT.Application.Services
             };
         }
 
-        public async Task<ProductViewModel> InsertAsync(BaseProductViewModel productViewModel, CancellationToken cancellationToken = default)
+        public async Task<ProductResultViewModel> InsertAsync(BaseProductViewModel productViewModel, CancellationToken cancellationToken = default)
         {
-            await ExistsCategory(productViewModel.CategoryId, cancellationToken);
+            var result = await ExistsCategory(productViewModel.CategoryId, cancellationToken);
+            if (!result.Success)
+                return new ProductResultViewModel { ResultViewModel = result };
+
             var product = _mapper.Map<Product>(productViewModel);
+
             await _producRepository.InsertAsync(product, cancellationToken);
-            return _mapper.Map<ProductViewModel>(product);
+
+            var productView = _mapper.Map<ProductViewModel>(product);
+
+            return new ProductResultViewModel { ProductViewModel = productView, ResultViewModel = result }; ;
         }
 
-        public async Task UpdateAsync(Guid id, ProductViewModel productViewModel, CancellationToken cancellationToken = default)
+        public async Task<ResultViewModel> UpdateAsync(Guid id, ProductViewModel productViewModel, CancellationToken cancellationToken = default)
         {
-            var product = await GetProductIfNotExistsThrowException(id, cancellationToken);
-            await ExistsCategory(productViewModel.CategoryId, cancellationToken);
+            var product = await _producRepository.GetAsync(id, cancellationToken);
+            var productExists = GetProductIfNotExistReturnError(id, product);
+            if (!productExists.Success)
+                return productExists;
+
+            var result = await ExistsCategory(productViewModel.CategoryId, cancellationToken);
+            if (!result.Success)
+                return result;
+
             product = _mapper.Map<Product>(productViewModel);
             await _producRepository.UpdateAsync(product, cancellationToken);
+
+            return result;
         }
 
-        public async Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)
+        public async Task<ResultViewModel> DeleteAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            await GetProductIfNotExistsThrowException(id, cancellationToken);
+            var product = await _producRepository.GetAsync(id, cancellationToken);
+            var productExists = GetProductIfNotExistReturnError(id, product);
+            if (!productExists.Success)
+                return productExists;
+
             await _producRepository.DeleteAsync(id, cancellationToken);
+            return new ResultViewModel { Success = true };
         }
 
-        private async Task ExistsCategory(Guid? id, CancellationToken cancellationToken)
+        private async Task<ResultViewModel> ExistsCategory(Guid? id, CancellationToken cancellationToken)
         {
             if (id.HasValue && !await _categoryRepository.Exists(id.Value, cancellationToken))
-                throw new Exception($"Category '{id}' not found");
+                return new ResultViewModel { Success = false, Error = $"Category '{id}' not found"};
+
+            return new ResultViewModel { Success = true };
         }
 
-        private async Task<Product> GetProductIfNotExistsThrowException(Guid id, CancellationToken cancellationToken)
+        private ResultViewModel GetProductIfNotExistReturnError(Guid id, Product? product)
         {
-            return await _producRepository.GetAsync(id, cancellationToken) ?? throw new Exception($"Product '{id}' not found");
+            if (product == null)
+                return new ResultViewModel { Success = false, Error = $"Product '{id}' not found" };
+
+            return new ResultViewModel { Success = true };
         }
     }
 }

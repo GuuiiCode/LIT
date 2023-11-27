@@ -9,6 +9,12 @@ namespace LIT.Application.ViewModels
         public string? CategoryDescription { get; set; }
     }
 
+    public class ProductResultViewModel
+    {
+        public ProductViewModel ProductViewModel { get; set; }
+        public ResultViewModel ResultViewModel { get; set; }
+    }
+
     public class BaseProductViewModel
     {
         [Required(ErrorMessage = "Fill in the Name field")]
