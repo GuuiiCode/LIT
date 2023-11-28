@@ -5,6 +5,7 @@
       .NET version 7.0
       Angular version 14.0.0
       Node version 16.14.2
+      Bootstrap version 5.0
 
 
 ### To run the application on your machine, you will need to follow the following steps:
