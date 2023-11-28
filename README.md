@@ -2,9 +2,9 @@
 # LIT System
 
 ### Version of the technologies used in this project
-   .NET version 7.0
-   Angular version 14.0.0
-   Node version 16.14.2
+      .NET version 7.0
+      Angular version 14.0.0
+      Node version 16.14.2
 
 
 To run the application on your machine, you will need to follow the following steps:
