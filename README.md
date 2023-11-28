@@ -8,7 +8,7 @@
       Bootstrap version 5.0
 
 
-### To run the application on your machine, you will need to follow the following steps:
+### To run the application on your machine, you will need to follow the steps:
 
  1. Have docker installed on your machine.
  
