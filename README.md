@@ -2,8 +2,8 @@
 # LIT System
 
 
-    Back-end .NET version 7.0
-    Angular front-end version 14.0.0
+    .NET version 7.0
+    Angular version 14.0.0
     Node version 16.14.2
 
 
