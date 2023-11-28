@@ -2,7 +2,7 @@
 # LIT System
 
 
-## .NET backend version 7.0
+## back-end .NET version 7.0
 
 ## Angular front-end version 14.0.0
 
