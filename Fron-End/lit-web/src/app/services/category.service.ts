@@ -8,7 +8,7 @@ import { BaseCategory, Category } from '../models/category';
 })
 export class CategoryService {
 
-  API: string = 'https://localhost:3000/api/Category'
+  API: string = 'http://localhost:3000/api/Category'
 
   constructor(private http: HttpClient) { }
 
