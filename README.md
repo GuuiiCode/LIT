@@ -7,7 +7,7 @@
       Node version 16.14.2
 
 
-To run the application on your machine, you will need to follow the following steps:
+### To run the application on your machine, you will need to follow the following steps:
 
  1. Have docker installed on your machine.
  
