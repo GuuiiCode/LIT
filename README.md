@@ -2,11 +2,11 @@
 # LIT System
 
 
-# .NET backend version 7.0
+## .NET backend version 7.0
 
-# Angular front-end version 14.0.0
+## Angular front-end version 14.0.0
 
-# Node version 16.14.2
+## Node version 16.14.2
 
 
 To run the application on your machine, you will need to follow the following steps:
