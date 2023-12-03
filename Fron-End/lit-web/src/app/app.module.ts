@@ -11,6 +11,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ListCategoryComponent } from './components/category/list-category/list-category.component';
 import { ListProductComponent } from './components/product/list-product/list-product.component';
 import { NavMenuComponent } from './shared/nav-menu/nav-menu.component';
+import { NotificationsComponent } from './shared/notifications/notifications.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { NavMenuComponent } from './shared/nav-menu/nav-menu.component';
     ListCategoryComponent,
     ListProductComponent,
     NavMenuComponent,
+    NotificationsComponent,
   ],
   imports: [
     BrowserModule,
