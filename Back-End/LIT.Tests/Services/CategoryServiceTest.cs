@@ -31,21 +31,37 @@ namespace LIT.Tests.Services
             _mapper.Setup(x => x.Map<Category>(It.IsAny<BaseCategoryViewModel>()))
                 .Returns(CreateCategoryObject());
 
+            _mapper.Setup(x => x.Map<BaseCategoryViewModel>(It.IsAny<Category>()))
+                .Returns(CreateCategoryViewModelObject());
+
             var result = await _categoryService.InsertAsync(CreateBaseCategoryObject(), It.IsAny<CancellationToken>());
 
+            Assert.NotNull(result);
+            Assert.Equal("name CategoryView", result.Name);
+            Assert.Equal("description CategoryView", result.Description);
         }
 
         public Category CreateCategoryObject()
         {
-            return new Category("name", "description");
+            return new Category("name Category", "description Category");
+        }
+
+        public CategoryViewModel CreateCategoryViewModelObject()
+        {
+            return new CategoryViewModel
+            {
+                Id = Guid.NewGuid(),
+                Name = "name CategoryView",
+                Description = "description CategoryView"
+            };
         }
 
         public BaseCategoryViewModel CreateBaseCategoryObject()
         {
             return new BaseCategoryViewModel
             {
-                Name = "name",
-                Description = "description",
+                Name = "name BaseCategoryViewModel",
+                Description = "description BaseCategoryViewModel",
             };
         }
     }

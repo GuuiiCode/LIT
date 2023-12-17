@@ -1,5 +1,4 @@
 ﻿using ControlExpenses.Domain.Entities;
-using System.ComponentModel.DataAnnotations;
 
 namespace LIT.Domain.Entities
 {
@@ -17,22 +16,51 @@ namespace LIT.Domain.Entities
             Price = price;
             Color = color;
             CategoryId = categoryId;
+            ValidateFields();
         }
 
-        [Required(ErrorMessage = "Fill in the Name field")]
-        [StringLength(100, ErrorMessage = "Maximum 100 characters")]
         public string Name { get; private set; }
-
-        [Required(ErrorMessage = "Fill in the Description field")]
-        [StringLength(150, ErrorMessage = "Maximum 150 characters")]
         public string Description { get; private set; }
-
-        [Required(ErrorMessage = "Fill in the Price field")]
         public decimal Price { get; private set; }
-
-        [Required(ErrorMessage = "Fill in the Category field")]
         public Guid CategoryId { get; private set; }
-
         public string? Color { get; private set; }
+
+        public void ValidateFields()
+        {
+            NameIsValid();
+            DescriptionIsValid();
+            PriceIsValid();
+            CategoryIdIsValid();
+        }
+
+        public void NameIsValid()
+        {
+            if (string.IsNullOrEmpty(Name))
+                throw new ArgumentNullException(nameof(Name));
+
+            if (Name.Length > 100)
+                throw new ArgumentOutOfRangeException($"{nameof(Name)} Maximum 100 characters");
+        }
+
+        public void DescriptionIsValid()
+        {
+            if (string.IsNullOrEmpty(Description))
+                throw new ArgumentNullException(nameof(Description));
+
+            if (Description.Length > 150)
+                throw new ArgumentOutOfRangeException($"{nameof(Description)} Maximum 150 characters");
+        }
+
+        public void PriceIsValid()
+        {
+            if (Price.Equals(null))
+                throw new ArgumentNullException(nameof(Price));
+        }
+
+        public void CategoryIdIsValid()
+        {
+            if (CategoryId == Guid.Empty)
+                throw new ArgumentNullException(nameof(CategoryId));
+        }
     }
 }

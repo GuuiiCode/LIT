@@ -1,5 +1,4 @@
 ﻿using ControlExpenses.Domain.Entities;
-using System.ComponentModel.DataAnnotations;
 
 namespace LIT.Domain.Entities
 {
@@ -11,14 +10,34 @@ namespace LIT.Domain.Entities
             Id = Guid.NewGuid();
             Name = name;
             Description = description;
+            ValidateFields();
         }
 
-        [Required(ErrorMessage = "Fill in the Name field")]
-        [StringLength(100, ErrorMessage = "Maximum 100 characters")]
         public string Name { get; private set; }
-
-        [Required(ErrorMessage = "Fill in the Description field")]
-        [StringLength(150, ErrorMessage = "Maximum 150 characters")]
         public string Description { get; private set; }
+
+        public void ValidateFields()
+        {
+            NameIsValid();
+            DescriptionIsValid();
+        }
+
+        public void NameIsValid()
+        { 
+            if(string.IsNullOrEmpty(Name))
+                throw new ArgumentNullException(nameof(Name));
+
+            if (Name.Length > 100)
+                throw new ArgumentOutOfRangeException($"{nameof(Name)} Maximum 100 characters");
+        }
+
+        public void DescriptionIsValid()
+        {
+            if (string.IsNullOrEmpty(Description))
+                throw new ArgumentNullException(nameof(Description));
+
+            if (Description.Length > 150)
+                throw new ArgumentOutOfRangeException($"{nameof(Description)} Maximum 150 characters");
+        }
     }
 }
