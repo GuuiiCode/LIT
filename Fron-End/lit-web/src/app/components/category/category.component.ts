@@ -87,7 +87,7 @@ export class CategoryComponent implements OnInit {
 
     this.getAll();
     this.msgSuccess = 'Category ' + value + ' with success';
-    this.hasSuccess = true
+    this.hasSuccess = true;
     this.hasError = false;
 
     setTimeout(() => {
@@ -105,7 +105,7 @@ export class CategoryComponent implements OnInit {
         this.hasError = false;
       }, 2000);
     }
-    this.hasSuccess = false
+    this.hasSuccess = false;
   }
 
   clearFields(): void {

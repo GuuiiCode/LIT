@@ -114,7 +114,7 @@ export class ProductComponent implements OnInit {
 
     this.getAll();
     this.msgSuccess = 'Product ' + value + ' with success';
-    this.hasSuccess = true
+    this.hasSuccess = true;
     this.hasError = false;
 
     setTimeout(() => {
