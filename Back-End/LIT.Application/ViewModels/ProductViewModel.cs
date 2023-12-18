@@ -1,7 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace LIT.Application.ViewModels
 {
+    [ExcludeFromCodeCoverage]
     public class ProductViewModel : BaseProductViewModel
     {
         public Guid Id { get; set; }
@@ -9,12 +11,14 @@ namespace LIT.Application.ViewModels
         public string? CategoryDescription { get; set; }
     }
 
+    [ExcludeFromCodeCoverage]
     public class ProductResultViewModel
     {
         public ProductViewModel ProductViewModel { get; set; }
         public ResultViewModel ResultViewModel { get; set; }
     }
 
+    [ExcludeFromCodeCoverage]
     public class BaseProductViewModel
     {
         [Required(ErrorMessage = "Fill in the Name field")]

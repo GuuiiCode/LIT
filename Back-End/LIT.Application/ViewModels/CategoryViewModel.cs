@@ -1,12 +1,15 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace LIT.Application.ViewModels
 {
+    [ExcludeFromCodeCoverage]
     public class CategoryViewModel : BaseCategoryViewModel
     {
         public Guid Id { get; set; }
     }
 
+    [ExcludeFromCodeCoverage]
     public class BaseCategoryViewModel
     {
         [Required(ErrorMessage = "Fill in the Name field")]

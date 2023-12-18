@@ -2,10 +2,12 @@
 using LIT.Domain.Interfaces.Repositories;
 using LIT.Infra.Context;
 using MongoDB.Driver;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 
 namespace LIT.Infra.Repositories
 {
+    [ExcludeFromCodeCoverage]
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity
     {
         private readonly IMongoCollection<TEntity> _collection;

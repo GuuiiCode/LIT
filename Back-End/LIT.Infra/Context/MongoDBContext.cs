@@ -1,7 +1,9 @@
 ﻿using MongoDB.Driver;
+using System.Diagnostics.CodeAnalysis;
 
 namespace LIT.Infra.Context
 {
+    [ExcludeFromCodeCoverage]
     public class MongoDBContext
     {
         private readonly IMongoDatabase _database;

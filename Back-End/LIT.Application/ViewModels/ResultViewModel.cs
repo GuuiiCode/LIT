@@ -1,5 +1,8 @@
-﻿namespace LIT.Application.ViewModels
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace LIT.Application.ViewModels
 {
+    [ExcludeFromCodeCoverage]
     public class ResultViewModel
     {
         public bool Success { get; set; }
