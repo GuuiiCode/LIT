@@ -1,12 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using LIT.Application.Services.Interfaces;
+using LIT.WebAPI.Controllers;
+using Moq;
 
 namespace LIT.Tests.Controllers
 {
-    internal class CategoryControllerTest
+    public class CategoryControllerTest
     {
+        private readonly Mock<ICategoryService> _categoryService;
+        private readonly CategoryController _categoryController;
+
+        public CategoryControllerTest()
+        {
+            _categoryService = new Mock<ICategoryService>();
+            _categoryController = new CategoryController(_categoryService.Object);
+        }
     }
 }

@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
 using System.Diagnostics.CodeAnalysis;
 
-namespace LIT.WebAPI.Configuration
+namespace LIT.Infra.Configuration
 {
     [ExcludeFromCodeCoverage]
     public static class RepositoryCollectionExtensions

@@ -1,5 +1,5 @@
 using LIT.Application.Configuration;
-using LIT.WebAPI.Configuration;
+using LIT.Infra.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 

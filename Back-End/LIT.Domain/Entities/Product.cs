@@ -29,7 +29,6 @@ namespace LIT.Domain.Entities
         {
             NameIsValid();
             DescriptionIsValid();
-            PriceIsValid();
             CategoryIdIsValid();
         }
 
@@ -49,12 +48,6 @@ namespace LIT.Domain.Entities
 
             if (Description.Length > 150)
                 throw new ArgumentOutOfRangeException($"{nameof(Description)} Maximum 150 characters");
-        }
-
-        public void PriceIsValid()
-        {
-            if (Price.Equals(null))
-                throw new ArgumentNullException(nameof(Price));
         }
 
         public void CategoryIdIsValid()
