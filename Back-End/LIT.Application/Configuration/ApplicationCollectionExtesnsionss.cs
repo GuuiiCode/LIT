@@ -11,8 +11,9 @@ namespace LIT.Application.Configuration
     {
         public static IServiceCollection AddServices(this IServiceCollection services)
         {
-            services.AddTransient<IProductService, ProductService>();
-            services.AddTransient<ICategoryService, CategoryService>();
+            services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<IUserService, UserService>();
             return services;
         }
 
