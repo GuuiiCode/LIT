@@ -61,7 +61,6 @@ LIT/
 
 ```bash
 git clone https://github.com/GuuiiCode/LIT.git
-cd LIT
 ```
 
 ---
