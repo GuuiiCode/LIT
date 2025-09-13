@@ -3,6 +3,7 @@ version: '3.4'
 services:
   lit.webapi:
     image: ${DOCKER_REGISTRY-}litwebapi
+    container_name: BackEnd 
     build:
       context: .
       dockerfile: Back-End/LIT.WebAPI/Dockerfile
@@ -10,6 +11,7 @@ services:
       - mongodb
     environment:
       MongoDBSettings__ConnectionString: "mongodb://admin:admin@mongodb:27017"
+      ASPNETCORE_ENVIRONMENT: Development
     ports:
       - "3000:80"
 
@@ -23,6 +25,16 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: admin
     volumes:
       - mongodb_data:/data/db
+      
+  frontend:
+    container_name: FrontEnd
+    build:
+      context: ./Fron-End/lit-web
+      dockerfile: Dockerfile
+    ports:
+      - "4200:80"
+    depends_on:
+      - lit.webapi
 
 volumes:
   mongodb_data:
